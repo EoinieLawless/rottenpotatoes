@@ -7,11 +7,20 @@ class MoviesController < ApplicationController
   end
 
   def index
-   # @movies = Movie.all
+    # @movies = Movie.all
     #My added code 
+    #part 1
     @all_ratings = Movie.all_ratings
-    @rating_to_show= params[:ratings]&.keys || @all_ratings
-    @movies =Movie.with_ratings(rating: @rating_to_show)
+    @ratings_to_show = params[:ratings]&.keys || @all_ratings
+    sort_column = params[:sort] || 'title'
+
+    @movies = Movie.with_ratings(@ratings_to_show).order(sort_column)
+
+    @sort_column = sort_column
+
+    #@all_ratings = Movie.all_ratings
+    #@rating_to_show= params[:ratings]&.keys || @all_ratings
+    #@movies =Movie.with_ratings(rating: @rating_to_show)
   end
 
   def new
