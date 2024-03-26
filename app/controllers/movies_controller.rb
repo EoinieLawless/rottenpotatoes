@@ -9,18 +9,18 @@ class MoviesController < ApplicationController
   def index
     # @movies = Movie.all
     #My added code 
-    #part 1
+    #part 1 + 2
     @all_ratings = Movie.all_ratings
-    @ratings_to_show = params[:ratings]&.keys || @all_ratings
-    sort_column = params[:sort] || 'title'
+    @ratings_to_show = params[:ratings]&.keys || @all_ratings || session[:ratings]&.keys
+    sort_column = params[:sort] || session[:sort]
 
     @movies = Movie.with_ratings(@ratings_to_show).order(sort_column)
 
     @sort_column = sort_column
 
-    #@all_ratings = Movie.all_ratings
-    #@rating_to_show= params[:ratings]&.keys || @all_ratings
-    #@movies =Movie.with_ratings(rating: @rating_to_show)
+    #Part 3
+    session[:sort] =sort_column
+    session[:ratings] = params[:ratings] if params[:ratings].present?
   end
 
   def new
