@@ -11,15 +11,13 @@ class MoviesController < ApplicationController
     #My added code 
     #part 1 + 2
     @all_ratings = Movie.all_ratings
-    @ratings_to_show = params[:ratings]&.keys || @all_ratings || session[:ratings]&.keys
-    sort_column = params[:sort] || session[:sort]
+    @ratings_to_show = params[:ratings]&.keys || session[:ratings]&.keys || @all_ratings
+    @sort_column = params[:sort] || session[:sort]
 
-    @movies = Movie.with_ratings(@ratings_to_show).order(sort_column)
-
-    @sort_column = sort_column
+    @movies = Movie.with_ratings(@ratings_to_show).order(@sort_column)
 
     #Part 3
-    session[:sort] =sort_column
+    session[:sort] =@sort_column
     session[:ratings] = params[:ratings] if params[:ratings].present?
   end
 
